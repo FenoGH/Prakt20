@@ -1,0 +1,25 @@
+﻿<Window x:Class="Prakt20.Справочник"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Prakt20"
+        mc:Ignorable="d"
+        Title="Справочник" Height="400" Width="280" Loaded="Window_Loaded" ResizeMode="NoResize">
+    <Grid>
+        <Menu>
+            <MenuItem Header="Опции">
+                <MenuItem Header="Добавить запись" Click="ДобавитьЗапись"></MenuItem>
+            <MenuItem Header="Редактировать запись" Click="РедактироватьЗапись"></MenuItem>
+            <MenuItem Header="Удалить запись" Click="УдалитьЗапись"></MenuItem>
+                </MenuItem>
+        </Menu>
+        <DataGrid x:Name="SpravDG" IsReadOnly="True" AutoGenerateColumns="False" Margin="0,22,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Код" Width="32" Binding="{Binding Код_детали}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Наименование детали" Width="*" Binding="{Binding Наименование_детали}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Цена" Width="80" Binding="{Binding Цена}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

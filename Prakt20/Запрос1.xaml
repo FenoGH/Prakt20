@@ -1,0 +1,26 @@
+﻿<Window x:Class="Prakt20.Запрос1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Prakt20"
+        mc:Ignorable="d"
+        Title="Запрос1" Height="400" Width="400" Loaded="Window_Loaded" ResizeMode="NoResize">
+    <Grid>
+
+        <DataGrid x:Name="Zap1DG" IsReadOnly="True" AutoGenerateColumns="False" Margin="0,58,0,164">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*" Header="Код детали" Binding="{Binding Код_детали}"></DataGridTextColumn>
+                <DataGridTextColumn Width="*" Header="Количество поступило" Binding="{Binding Количество_поступило}"></DataGridTextColumn>
+            </DataGrid.Columns>
+
+        </DataGrid>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="С помощью SQL-запроса подсчитать количество деталей, которые получены
+складом в течение одного месяца. Запрос должен содержать поля: Наименование детали,
+Количество" VerticalAlignment="Top" Height="58" Width="380"/>
+        <Button Content="Выполнить" HorizontalAlignment="Left" Margin="256,273,0,0" VerticalAlignment="Top" Click="Button_Click" Height="38" Width="77"/>
+        <TextBox x:Name="Tb1" HorizontalAlignment="Left" Margin="28,283,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="28"/>
+        <Label Content="Введите номер месяца" HorizontalAlignment="Left" Margin="20,257,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

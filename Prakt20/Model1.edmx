@@ -1,0 +1,410 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище ДеталиModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Накладная_на_поступление">
+          <Key>
+            <PropertyRef Name="Номер_накладной" />
+          </Key>
+          <Property Name="Номер_накладной" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Код_детали" Type="int" Nullable="false" />
+          <Property Name="Количество_поступило" Type="int" Nullable="false" />
+          <Property Name="Дата_прихода" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Склад">
+          <Key>
+            <PropertyRef Name="Код_детали" />
+          </Key>
+          <Property Name="Код_детали" Type="int" Nullable="false" />
+          <Property Name="Количество" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Справочник_цен">
+          <Key>
+            <PropertyRef Name="Код_детали" />
+          </Key>
+          <Property Name="Код_детали" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Наименование_детали" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Цена" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Требование_на_выдачу">
+          <Key>
+            <PropertyRef Name="Номер_требования" />
+          </Key>
+          <Property Name="Номер_требования" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Код_детали" Type="int" Nullable="false" />
+          <Property Name="Количество_выдано" Type="int" Nullable="false" />
+          <Property Name="Дата_выдачи" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Накладная_на_поступление_Склад">
+          <End Role="Склад" Type="Self.Склад" Multiplicity="1" />
+          <End Role="Накладная_на_поступление" Type="Self.Накладная_на_поступление" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Склад">
+              <PropertyRef Name="Код_детали" />
+            </Principal>
+            <Dependent Role="Накладная_на_поступление">
+              <PropertyRef Name="Код_детали" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Накладная_на_поступление_Справочник_цен">
+          <End Role="Справочник_цен" Type="Self.Справочник_цен" Multiplicity="1" />
+          <End Role="Накладная_на_поступление" Type="Self.Накладная_на_поступление" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Справочник_цен">
+              <PropertyRef Name="Код_детали" />
+            </Principal>
+            <Dependent Role="Накладная_на_поступление">
+              <PropertyRef Name="Код_детали" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Склад_Справочник_цен">
+          <End Role="Справочник_цен" Type="Self.Справочник_цен" Multiplicity="1" />
+          <End Role="Склад" Type="Self.Склад" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Справочник_цен">
+              <PropertyRef Name="Код_детали" />
+            </Principal>
+            <Dependent Role="Склад">
+              <PropertyRef Name="Код_детали" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Требование_на_выдачу_Склад">
+          <End Role="Склад" Type="Self.Склад" Multiplicity="1" />
+          <End Role="Требование_на_выдачу" Type="Self.Требование_на_выдачу" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Склад">
+              <PropertyRef Name="Код_детали" />
+            </Principal>
+            <Dependent Role="Требование_на_выдачу">
+              <PropertyRef Name="Код_детали" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Требование_на_выдачу_Справочник_цен">
+          <End Role="Справочник_цен" Type="Self.Справочник_цен" Multiplicity="1" />
+          <End Role="Требование_на_выдачу" Type="Self.Требование_на_выдачу" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Справочник_цен">
+              <PropertyRef Name="Код_детали" />
+            </Principal>
+            <Dependent Role="Требование_на_выдачу">
+              <PropertyRef Name="Код_детали" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="ДобавитьДеталь" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="price" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Задание2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="month" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Количество" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="month" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Количество_Деталей_По_Месяцу" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Month" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ОбновитьДеталь" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="price" Type="int" Mode="In" />
+          <Parameter Name="code" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Стоимость" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="trebid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ТребованиеСтоимость" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numtreb" Type="int" Mode="In" />
+        </Function>
+        <Function Name="УдалитьДеталь" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="iddetail" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="Хранилище ДеталиModelContainer">
+          <EntitySet Name="Накладная_на_поступление" EntityType="Self.Накладная_на_поступление" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Склад" EntityType="Self.Склад" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Справочник_цен" EntityType="Self.Справочник_цен" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Требование_на_выдачу" EntityType="Self.Требование_на_выдачу" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Накладная_на_поступление_Склад" Association="Self.FK_Накладная_на_поступление_Склад">
+            <End Role="Склад" EntitySet="Склад" />
+            <End Role="Накладная_на_поступление" EntitySet="Накладная_на_поступление" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Накладная_на_поступление_Справочник_цен" Association="Self.FK_Накладная_на_поступление_Справочник_цен">
+            <End Role="Справочник_цен" EntitySet="Справочник_цен" />
+            <End Role="Накладная_на_поступление" EntitySet="Накладная_на_поступление" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Склад_Справочник_цен" Association="Self.FK_Склад_Справочник_цен">
+            <End Role="Справочник_цен" EntitySet="Справочник_цен" />
+            <End Role="Склад" EntitySet="Склад" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Требование_на_выдачу_Склад" Association="Self.FK_Требование_на_выдачу_Склад">
+            <End Role="Склад" EntitySet="Склад" />
+            <End Role="Требование_на_выдачу" EntitySet="Требование_на_выдачу" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Требование_на_выдачу_Справочник_цен" Association="Self.FK_Требование_на_выдачу_Справочник_цен">
+            <End Role="Справочник_цен" EntitySet="Справочник_цен" />
+            <End Role="Требование_на_выдачу" EntitySet="Требование_на_выдачу" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ДеталиModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Накладная_на_поступление">
+          <Key>
+            <PropertyRef Name="Номер_накладной" />
+          </Key>
+          <Property Name="Номер_накладной" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Код_детали" Type="Int32" Nullable="false" />
+          <Property Name="Количество_поступило" Type="Int32" Nullable="false" />
+          <Property Name="Дата_прихода" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Склад" Relationship="Self.FK_Накладная_на_поступление_Склад" FromRole="Накладная_на_поступление" ToRole="Склад" />
+          <NavigationProperty Name="Справочник_цен" Relationship="ДеталиModel.FK_Накладная_на_поступление_Справочник_цен" FromRole="Накладная_на_поступление" ToRole="Справочник_цен" />
+        </EntityType>
+        <EntityType Name="Склад">
+          <Key>
+            <PropertyRef Name="Код_детали" />
+          </Key>
+          <Property Name="Код_детали" Type="Int32" Nullable="false" />
+          <Property Name="Количество" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Накладная_на_поступление" Relationship="Self.FK_Накладная_на_поступление_Склад" FromRole="Склад" ToRole="Накладная_на_поступление" />
+          <NavigationProperty Name="Справочник_цен" Relationship="Self.FK_Склад_Справочник_цен" FromRole="Склад" ToRole="Справочник_цен" />
+          <NavigationProperty Name="Требование_на_выдачу" Relationship="Self.FK_Требование_на_выдачу_Склад" FromRole="Склад" ToRole="Требование_на_выдачу" />
+        </EntityType>
+        <EntityType Name="Справочник_цен">
+          <Key>
+            <PropertyRef Name="Код_детали" />
+          </Key>
+          <Property Name="Код_детали" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Наименование_детали" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Цена" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Склад" Relationship="Self.FK_Склад_Справочник_цен" FromRole="Справочник_цен" ToRole="Склад" />
+          <NavigationProperty Name="Накладная_на_поступление" Relationship="ДеталиModel.FK_Накладная_на_поступление_Справочник_цен" FromRole="Справочник_цен" ToRole="Накладная_на_поступление" />
+          <NavigationProperty Name="Требование_на_выдачу" Relationship="ДеталиModel.FK_Требование_на_выдачу_Справочник_цен" FromRole="Справочник_цен" ToRole="Требование_на_выдачу" />
+        </EntityType>
+        <EntityType Name="Требование_на_выдачу">
+          <Key>
+            <PropertyRef Name="Номер_требования" />
+          </Key>
+          <Property Name="Номер_требования" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Код_детали" Type="Int32" Nullable="false" />
+          <Property Name="Количество_выдано" Type="Int32" Nullable="false" />
+          <Property Name="Дата_выдачи" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Склад" Relationship="Self.FK_Требование_на_выдачу_Склад" FromRole="Требование_на_выдачу" ToRole="Склад" />
+          <NavigationProperty Name="Справочник_цен" Relationship="ДеталиModel.FK_Требование_на_выдачу_Справочник_цен" FromRole="Требование_на_выдачу" ToRole="Справочник_цен" />
+        </EntityType>
+        <Association Name="FK_Накладная_на_поступление_Склад">
+          <End Role="Склад" Type="Self.Склад" Multiplicity="1" />
+          <End Role="Накладная_на_поступление" Type="Self.Накладная_на_поступление" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Склад">
+              <PropertyRef Name="Код_детали" />
+            </Principal>
+            <Dependent Role="Накладная_на_поступление">
+              <PropertyRef Name="Код_детали" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Склад_Справочник_цен">
+          <End Role="Справочник_цен" Type="Self.Справочник_цен" Multiplicity="1" />
+          <End Role="Склад" Type="Self.Склад" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Справочник_цен">
+              <PropertyRef Name="Код_детали" />
+            </Principal>
+            <Dependent Role="Склад">
+              <PropertyRef Name="Код_детали" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Требование_на_выдачу_Склад">
+          <End Role="Склад" Type="Self.Склад" Multiplicity="1" />
+          <End Role="Требование_на_выдачу" Type="Self.Требование_на_выдачу" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Склад">
+              <PropertyRef Name="Код_детали" />
+            </Principal>
+            <Dependent Role="Требование_на_выдачу">
+              <PropertyRef Name="Код_детали" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ДеталиEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Накладная_на_поступление" EntityType="Self.Накладная_на_поступление" />
+          <EntitySet Name="Склад" EntityType="Self.Склад" />
+          <EntitySet Name="Справочник_цен" EntityType="Self.Справочник_цен" />
+          <EntitySet Name="Требование_на_выдачу" EntityType="Self.Требование_на_выдачу" />
+          <AssociationSet Name="FK_Накладная_на_поступление_Склад" Association="Self.FK_Накладная_на_поступление_Склад">
+            <End Role="Склад" EntitySet="Склад" />
+            <End Role="Накладная_на_поступление" EntitySet="Накладная_на_поступление" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Склад_Справочник_цен" Association="Self.FK_Склад_Справочник_цен">
+            <End Role="Справочник_цен" EntitySet="Справочник_цен" />
+            <End Role="Склад" EntitySet="Склад" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Требование_на_выдачу_Склад" Association="Self.FK_Требование_на_выдачу_Склад">
+            <End Role="Склад" EntitySet="Склад" />
+            <End Role="Требование_на_выдачу" EntitySet="Требование_на_выдачу" />
+          </AssociationSet>
+          <FunctionImport Name="ДобавитьДеталь">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="price" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ОбновитьДеталь">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="price" Mode="In" Type="Int32" />
+            <Parameter Name="code" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="УдалитьДеталь">
+          <Parameter Name="iddetail" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Задание2" ReturnType="Collection(ДеталиModel.Задание2_Result)">
+          <Parameter Name="month" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Количество">
+          <Parameter Name="month" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Количество_Деталей_По_Месяцу" ReturnType="Collection(Int32)">
+          <Parameter Name="Month" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <AssociationSet Name="FK_Накладная_на_поступление_Справочник_цен" Association="ДеталиModel.FK_Накладная_на_поступление_Справочник_цен">
+            <End Role="Справочник_цен" EntitySet="Справочник_цен" />
+            <End Role="Накладная_на_поступление" EntitySet="Накладная_на_поступление" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Требование_на_выдачу_Справочник_цен" Association="ДеталиModel.FK_Требование_на_выдачу_Справочник_цен">
+            <End Role="Справочник_цен" EntitySet="Справочник_цен" />
+            <End Role="Требование_на_выдачу" EntitySet="Требование_на_выдачу" />
+          </AssociationSet>
+          <FunctionImport Name="ТребованиеСтоимость" ReturnType="Collection(ДеталиModel.ТребованиеСтоимость_Result)">
+          <Parameter Name="numtreb" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Стоимость">
+          <Parameter Name="trebid" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="Задание2_Result">
+          <Property Type="Int32" Name="Код_детали" Nullable="false" />
+          <Property Type="Int32" Name="Количество_поступило" Nullable="false" />
+        </ComplexType>
+        <Association Name="FK_Накладная_на_поступление_Справочник_цен">
+          <End Type="ДеталиModel.Справочник_цен" Role="Справочник_цен" Multiplicity="1" />
+          <End Type="ДеталиModel.Накладная_на_поступление" Role="Накладная_на_поступление" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Справочник_цен">
+              <PropertyRef Name="Код_детали" />
+            </Principal>
+            <Dependent Role="Накладная_на_поступление">
+              <PropertyRef Name="Код_детали" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Требование_на_выдачу_Справочник_цен">
+          <End Type="ДеталиModel.Справочник_цен" Role="Справочник_цен" Multiplicity="1" />
+          <End Type="ДеталиModel.Требование_на_выдачу" Role="Требование_на_выдачу" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Справочник_цен">
+              <PropertyRef Name="Код_детали" />
+            </Principal>
+            <Dependent Role="Требование_на_выдачу">
+              <PropertyRef Name="Код_детали" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="ТребованиеСтоимость_Result">
+          <Property Type="Int32" Name="Номер_требования" Nullable="false" />
+          <Property Type="Double" Name="Цена" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ДеталиModelContainer" CdmEntityContainer="ДеталиEntities">
+          <EntitySetMapping Name="Накладная_на_поступление">
+            <EntityTypeMapping TypeName="ДеталиModel.Накладная_на_поступление">
+              <MappingFragment StoreEntitySet="Накладная_на_поступление">
+                <ScalarProperty Name="Номер_накладной" ColumnName="Номер_накладной" />
+                <ScalarProperty Name="Код_детали" ColumnName="Код_детали" />
+                <ScalarProperty Name="Количество_поступило" ColumnName="Количество_поступило" />
+                <ScalarProperty Name="Дата_прихода" ColumnName="Дата_прихода" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Склад">
+            <EntityTypeMapping TypeName="ДеталиModel.Склад">
+              <MappingFragment StoreEntitySet="Склад">
+                <ScalarProperty Name="Код_детали" ColumnName="Код_детали" />
+                <ScalarProperty Name="Количество" ColumnName="Количество" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Справочник_цен">
+            <EntityTypeMapping TypeName="ДеталиModel.Справочник_цен">
+              <MappingFragment StoreEntitySet="Справочник_цен">
+                <ScalarProperty Name="Код_детали" ColumnName="Код_детали" />
+                <ScalarProperty Name="Наименование_детали" ColumnName="Наименование_детали" />
+                <ScalarProperty Name="Цена" ColumnName="Цена" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Требование_на_выдачу">
+            <EntityTypeMapping TypeName="ДеталиModel.Требование_на_выдачу">
+              <MappingFragment StoreEntitySet="Требование_на_выдачу">
+                <ScalarProperty Name="Номер_требования" ColumnName="Номер_требования" />
+                <ScalarProperty Name="Код_детали" ColumnName="Код_детали" />
+                <ScalarProperty Name="Количество_выдано" ColumnName="Количество_выдано" />
+                <ScalarProperty Name="Дата_выдачи" ColumnName="Дата_выдачи" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ДобавитьДеталь" FunctionName="Хранилище ДеталиModel.ДобавитьДеталь" />
+          <FunctionImportMapping FunctionImportName="ОбновитьДеталь" FunctionName="Хранилище ДеталиModel.ОбновитьДеталь" />
+          <FunctionImportMapping FunctionImportName="УдалитьДеталь" FunctionName="Хранилище ДеталиModel.УдалитьДеталь" />
+          <FunctionImportMapping FunctionImportName="Задание2" FunctionName="Хранилище ДеталиModel.Задание2">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ДеталиModel.Задание2_Result">
+                <ScalarProperty Name="Код_детали" ColumnName="Код_детали" />
+                <ScalarProperty Name="Количество_поступило" ColumnName="Количество_поступило" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Количество" FunctionName="Хранилище ДеталиModel.Количество" />
+          <FunctionImportMapping FunctionImportName="Количество_Деталей_По_Месяцу" FunctionName="Хранилище ДеталиModel.Количество_Деталей_По_Месяцу" />
+          <FunctionImportMapping FunctionImportName="ТребованиеСтоимость" FunctionName="Хранилище ДеталиModel.ТребованиеСтоимость">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ДеталиModel.ТребованиеСтоимость_Result">
+                <ScalarProperty Name="Номер_требования" ColumnName="Номер_требования" />
+                <ScalarProperty Name="Цена" ColumnName="Цена" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Стоимость" FunctionName="Хранилище ДеталиModel.Стоимость" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

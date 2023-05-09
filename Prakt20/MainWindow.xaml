@@ -1,0 +1,41 @@
+﻿<Window x:Class="Prakt20.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Prakt20"
+        mc:Ignorable="d"
+        Title="Склад" Height="450" Width="800" Loaded="Window_Loaded" ResizeMode="NoResize">
+    <Grid>
+        <Menu>
+            <MenuItem Header="Справочник">
+                <MenuItem Header="Открыть справочник" Click="Открыть"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Запросы">
+                <MenuItem Header="Запрос 1" Click="Запрос1"></MenuItem>
+                <MenuItem Header="Запрос 2" Click="Запрос2"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Опции">
+                <MenuItem Header="О программе" Click="About"></MenuItem>
+                <MenuItem Header="Поиск" Click="Find_Click"></MenuItem>
+                <MenuItem Header="Выход" Click="Close"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <DataGrid x:Name="DetailDG"  AutoGenerateColumns="False" IsReadOnly="True" Margin="0,21,172,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*" Header="Код детали" Binding="{Binding Код_детали}"></DataGridTextColumn>
+                <DataGridTextColumn Width="*" Header="наименование детали" Binding="{Binding Справочник_цен.Наименование_детали}"></DataGridTextColumn>
+                <DataGridTextColumn Width="*" Header="Количество" Binding="{Binding Количество}"></DataGridTextColumn>
+                <DataGridTextColumn Width="*" Header="Цена" Binding="{Binding Справочник_цен.Цена}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <GroupBox Header="Поиск" Margin="628,21,10,206">
+            <Grid>
+                <Label Margin="0,10,0,-10">Введите код детали</Label>
+                <TextBox x:Name="Finder" Height="30" VerticalAlignment="Center"  ></TextBox>
+                <Button Height="30" x:Name="Find" Click="Find_Click" Content="Поиск" VerticalAlignment="Bottom"  ></Button>
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+</Window>
